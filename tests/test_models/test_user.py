@@ -8,6 +8,7 @@ import inspect
 import models
 from models import user
 from models.base_model import BaseModel
+import pycodestyle
 import pep8
 import unittest
 User = user.User
@@ -19,7 +20,6 @@ class TestUserDocs(unittest.TestCase):
     def setUpClass(cls):
         """Set up for the doc tests"""
         cls.user_f = inspect.getmembers(User, inspect.isfunction)
-
     def test_pep8_conformance_user(self):
         """Test that models/user.py conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
@@ -31,6 +31,20 @@ class TestUserDocs(unittest.TestCase):
         """Test that tests/test_models/test_user.py conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
         result = pep8s.check_files(['tests/test_models/test_user.py'])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
+        
+    def test_pycodestyle_conformance_user(self):
+        """Test that models/user.py conforms to PEP8."""
+        pep8s = pycodestyle.StyleGuide(quiet=True)
+        result = pep8s.check_files(['models/user.py'])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
+
+    def test_pycodestyle_conformance_test_user(self):
+        """Test that tests/test_models/test_user.py conforms to PEP8."""
+        pep8s = pycodestyle.StyleGuide(quiet=True)  # changed from pep8 to pycodestyle
+        result = pep8s.check_files(['models/user.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
